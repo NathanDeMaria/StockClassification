@@ -15,12 +15,23 @@ get_text_data <- function(ticker_symbol, start_date, pages_back) {
 		links <- sapply(nodes, function(node) {
 			xmlAttrs(getNodeSet(node, 'li/a')[[1]])['href']
 		})
-		publish_dates <- mdy(sapply(nodes, function(node) {	
+		raw_dates <- sapply(nodes, function(node) {	
 			raw_date <- xmlValue(getNodeSet(node, 'li/cite/span')[[1]])
 			raw_date <- substr(raw_date, 2, nchar(raw_date)-1)
-			paste(raw_date, year(current_date))
-		}))
-	
+			parsed_date <- paste(raw_date, year(current_date))
+			
+			# fixes dates that are from the previous year
+			# could fix by doing smarter parsing, but this is faster
+			if(month(current_date) < 6 && month(mdy(parsed_date)) > 10) {
+				parsed_date <- paste(raw_date, year(current_date) - 1)
+			}			
+			parsed_date
+		})
+		if(length(raw_dates) == 0) {
+			print("HEREEE")
+			return(data.table(ticker_symbol=character(), link=character(), date=character()))
+		}
+		publish_dates <- mdy(raw_dates)	
 		data.table(ticker_symbol=ticker_symbol, link=links, date=publish_dates)
 	}
 	
@@ -53,6 +64,7 @@ get_text_data <- function(ticker_symbol, start_date, pages_back) {
 	datas <- get_dat(ticker_symbol, start_date)
 	for(i in 1:pages_back) {
 		current_date <- min(datas$date) - days(1)
+		print(colnames(datas))
 		this_dat <- get_dat(ticker_symbol, current_date)
 		datas <- rbind(datas, this_dat)
 	}
