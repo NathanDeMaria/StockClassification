@@ -13,7 +13,7 @@ get_quandl <- function(code, start_date, end_date, data_frequency = NULL) {
 						  trim_end=end_date, 
 						  collapse=data_frequency,
 						  sort='asc'))
-		setnames(dat, "Adjusted Close", "close")
+		setnames(dat, "Adjusted Close", "adj_close")
 		dat
 	}, error = function(e) {
 		warning(paste0("get_quandl returned NULL for symbol ", code, ": ", e$message))
