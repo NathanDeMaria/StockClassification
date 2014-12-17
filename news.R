@@ -28,7 +28,6 @@ get_text_data <- function(ticker_symbol, start_date, pages_back) {
 			parsed_date
 		})
 		if(length(raw_dates) == 0) {
-			print("HEREEE")
 			return(data.table(ticker_symbol=character(), link=character(), date=character()))
 		}
 		publish_dates <- mdy(raw_dates)	
@@ -64,7 +63,6 @@ get_text_data <- function(ticker_symbol, start_date, pages_back) {
 	datas <- get_dat(ticker_symbol, start_date)
 	for(i in 1:pages_back) {
 		current_date <- min(datas$date) - days(1)
-		print(colnames(datas))
 		this_dat <- get_dat(ticker_symbol, current_date)
 		datas <- rbind(datas, this_dat)
 	}

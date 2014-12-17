@@ -7,14 +7,16 @@ Quandl.auth(app_settings('quandl_key'))
 
 get_quandl <- function(code, start_date, end_date, data_frequency = NULL) {
 	# NULL is daily	
-	tryCatch({		
-		data.table(Quandl(paste0('YAHOO/', code), 
+	prices <- tryCatch({		
+		dat <- data.table(Quandl(paste0('YAHOO/', code), 
 						  trim_start=start_date, 
 						  trim_end=end_date, 
 						  collapse=data_frequency,
 						  sort='asc'))
+		setnames(dat, "Adjusted Close", "close")
+		dat
 	}, error = function(e) {
-		warning(sprintf('Quandl returned NULL for %s', code))
+		warning(paste0("get_quandl returned NULL for symbol ", code, ": ", e$message))
 		NULL
 	})
 }
