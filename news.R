@@ -61,7 +61,7 @@ get_text_data <- function(ticker_symbol, start_date, pages_back) {
 	})
 	
 	datas <- get_dat(ticker_symbol, start_date)
-	for(i in 1:pages_back) {
+	for(i in seq_len(pages_back)) {
 		current_date <- min(datas$date) - days(1)
 		this_dat <- get_dat(ticker_symbol, current_date)
 		datas <- rbind(datas, this_dat)
