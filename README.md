@@ -9,7 +9,7 @@ Data on prices is currently from Quandl. News articles are from Yahoo Finance.
 For each day, a stock is flagged as up, down, or neutral (within 1/4 * sd) based on its rate of return. Using the textcat package, these will be matched with articles written x days beforehand.
 
 ## To Run
-Need an app_settings.xml file in the root directory, containing:
+Need an app_settings.xml file in the app_data directory, containing:
 \<key name="quandl_key"\>
 	\<value\>yourQuandlKey\</value\>
 \</key\>

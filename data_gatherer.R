@@ -5,7 +5,7 @@
 
 library(lubridate)
 
-get_data <- function(ticker_symbol, start_date, max_lag, pages_back=10) {
+get_data <- function(ticker_symbol, start_date, max_lag, pages_back=20) {
 	source('news.R')
 	source('quandl.R')
 	source('changes.R')
@@ -34,9 +34,8 @@ get_data <- function(ticker_symbol, start_date, max_lag, pages_back=10) {
 source('database.R')
 
 # I picked one from each GICS Sector in the S&P 500
-ticker_symbols <- c("AMZN", "CVS", "CVX", "ALL", "BMY",
-					"GE", "MSFT", "DOW", "T", "GAS")
-
+ticker_symbols <- readLines("app_data/symbols.txt")
+	
 # things today might have just the time, so I'll mess with that later
 # also, Quandl sometimes gives NA for today's price
 current_date <- Sys.Date() - 1  
