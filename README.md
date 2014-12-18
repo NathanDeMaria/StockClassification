@@ -10,9 +10,11 @@ For each day, a stock is flagged as up, down, or neutral (within 1/4 * sd) based
 
 ## To Run
 Need an app_settings.xml file in the app_data directory, containing:
+<code>
 \<key name="quandl_key"\>
 	\<value\>yourQuandlKey\</value\>
 \</key\>
+</code>
 
 First, run the data_gatherer.R script to fill the data/ directory with .rds files.
 
