@@ -1,11 +1,11 @@
 library(lubridate)
 
-get_data <- function(ticker_symbol, start_date, max_lag) {
+get_data <- function(ticker_symbol, start_date, max_lag, pages_back=10) {
 	source('news.R')
 	source('quandl.R')
 	source('changes.R')
 	
-	dats <- get_text_data(ticker_symbol, start_date, 10)
+	dats <- get_text_data(ticker_symbol, start_date, pages_back)
 	prices <- get_quandl(ticker_symbol, 
 						 as.character(min(dats$date)), 
 						 as.character(max(dats$date) + days(max_lag)))
