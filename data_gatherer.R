@@ -1,3 +1,8 @@
+###############################################################
+# Run this script to fill the data/ folder with *.rds for all #
+# of the selected companies (see ticker_symbols)              #
+###############################################################
+
 library(lubridate)
 
 get_data <- function(ticker_symbol, start_date, max_lag, pages_back=10) {
@@ -25,4 +30,29 @@ get_data <- function(ticker_symbol, start_date, max_lag, pages_back=10) {
 	dats[,eval(lag_names):=lapply(seq_len(max_lag), get_lag)]
 	dats
 }
+
+source('database.R')
+
+# I picked one from each GICS Sector in the S&P 500
+ticker_symbols <- c("AMZN", "CVS", "CVX", "ALL", "BMY",
+					"GE", "MSFT", "DOW", "T", "GAS")
+
+# things today might have just the time, so I'll mess with that later
+# also, Quandl sometimes gives NA for today's price
+current_date <- Sys.Date() - 1  
+
+max_lag <- 3
+verbose <- T
+
+success <- sapply(ticker_symbols, function(ticker_symbol) {	
+	if(verbose) {
+		print(paste("Getting data for", ticker_symbol))
+	}
+	datas <- get_data(ticker_symbol, current_date, max_lag)
+	if(!is.null(datas)) {
+		save_data(datas, ticker_symbol)
+		return(T)
+	}	
+	F
+})
 
